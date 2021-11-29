@@ -1,9 +1,19 @@
-const client = require("express");
-const bcrypt = require('bcrypt');
-const knex = require('knex')({
-    client: 'pg',
-    connection: process.env.DATABASE_URL,
+import config from "../knexfile";
+import bcrypt from "bcrypt";
+import Knex from "knex";
+
+import { createClient } from "redis";
+import crypto from "crypto";
+
+const client = createClient({
+    url: process.env.REDIS_URL,
 });
+
+(async () => {
+    await client.connect();
+})();
+
+const knex = Knex(config);
 
 class AuthService {
     async create(newUser) {
@@ -26,17 +36,14 @@ class AuthService {
         const correctPassword = await this.checkPassword(email, password);
         if (correctPassword) {
             const sessionId = crypto.randomUUID();
-            //TODO
-            //await client.set(sessionId, email, { EX: 60 });
+            await client.set(sessionId, email, { EX: 60 });
             return sessionId;
         }
         return undefined;
     }
 
     async getUserEmailForSession(sessionId) {
-        //TODO
-        //return client.get(sessionId);
-        return "dummy";
+        return client.get(sessionId);
     }
 
 }
