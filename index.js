@@ -57,6 +57,18 @@ app.get("/reisen", checkLogin, (req, res) => {
     //TODO
 });
 
+app.post("/reisen", checkLogin, (req, res) => {
+    //TODO
+});
+
+app.put("/reisen", checkLogin, (req, res) => {
+    //TODO
+});
+
+app.delete("/reisen", checkLogin, (req, res) => {
+    //TODO
+});
+
 app.listen(port, () => {
     console.log(`App started successfully`);
 });
