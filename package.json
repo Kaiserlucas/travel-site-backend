@@ -16,6 +16,6 @@
     "express": "^4.17.1",
     "express-openapi-validator": "^4.13.3",
     "knex": "^0.95.14",
-    "redis": "^4.0.0"
+    "redis": "3.1.2"
   }
 }

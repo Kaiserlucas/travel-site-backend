@@ -1,6 +1,8 @@
 import config from "../knexfile";
 import bcrypt from "bcrypt";
 import Knex from "knex";
+import { promisify } from "util";
+
 
 import { createClient } from "redis";
 import crypto from "crypto";
@@ -9,9 +11,8 @@ const client = createClient({
     url: process.env.REDIS_URL,
 });
 
-(async () => {
-    await client.connect();
-})();
+const getAsync = promisify(client.get).bind(client);
+const setExAsync = promisify(client.setex).bind(client);
 
 const knex = Knex(config);
 
@@ -36,14 +37,15 @@ class AuthService {
         const correctPassword = await this.checkPassword(email, password);
         if (correctPassword) {
             const sessionId = crypto.randomUUID();
-            await client.set(sessionId, email, { EX: 60 });
+            // Set the new value with an expiry of 1 hour
+            await setExAsync(sessionId, 60 * 60, email);
             return sessionId;
         }
         return undefined;
     }
 
     async getUserEmailForSession(sessionId) {
-        return client.get(sessionId);
+        return getAsync(sessionId);
     }
 
 }
