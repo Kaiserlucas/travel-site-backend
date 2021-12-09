@@ -1,44 +1,46 @@
 import crypto from "crypto";
 import { Knex } from "knex";
 
-type Expense = {
-  date: Date;
+type Trip = {
+  email: string;
   name: string;
-  value: number;
+  destination: string;
+  startDate: Date;
+  endDate: Date;
 };
 
-type SavedExpense = Expense & {
+type SavedTrip = Trip & {
   id: string;
 };
 
 class DBService {
-  expenses: SavedExpense[] = [];
+  expenses: SavedTrip[] = [];
   private readonly knex: Knex;
 
   constructor(knex: Knex) {
     this.knex = knex;
   }
 
-  async add(expense: Expense): Promise<SavedExpense> {
-    const newExpense = {
-      ...expense,
+  async add(trip: Trip): Promise<SavedTrip> {
+    const newTrip = {
+      ...trip,
       id: crypto.randomUUID(),
     };
-    await this.knex("expenses").insert(newExpense);
-    return newExpense;
+    //TODO: Check for user
+    await this.knex("trips").insert(newTrip);
+    return newTrip;
   }
 
   async delete(uuid: string): Promise<void> {
-    await this.knex("expeses").where({ id: uuid }).delete();
+    //TODO: Check for user
+    await this.knex("trips").where({ id: uuid }).delete();
   }
 
-  async getAll(): Promise<Expense[]> {
-    return this.knex("expenses");
+  async getAll(): Promise<Trip[]> {
+    //TODO: Check for user
+    return this.knex("trips");
   }
 
-  async getTotal(): Promise<number> {
-    return 0;
-  }
 }
 
 export default DBService;

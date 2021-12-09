@@ -11,7 +11,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 const knex = knexDriver(config);
-const expenseService = new DBService(knex);
+const dbService = new DBService(knex);
 const authService = new AuthService();
 
 app.use(express.json());
@@ -60,26 +60,21 @@ app.use(
   }
 );
 
-app.post("/expenses", checkLogin, (req, res) => {
+app.post("/trips", checkLogin, (req, res) => {
   const payload = req.body;
-  expenseService.add(payload).then((newEntry) => res.send(newEntry));
+  dbService.add(payload).then((newEntry) => res.send(newEntry));
 });
 
-app.delete("/expenses/:expenseId", checkLogin, (req, res) => {
-  const id = req.params.expenseId;
-  expenseService.delete(id).then(() => {
+app.delete("/trips/:tripId", checkLogin, (req, res) => {
+  const id = req.params.tripId;
+  dbService.delete(id).then(() => {
     res.status(204);
     res.send();
   });
 });
 
-app.get("/expenses", checkLogin, (req, res) => {
-  expenseService.getAll().then((total) => res.send(total));
-});
-
-app.get("/summary", checkLogin, async (req, res) => {
-  const total = await expenseService.getTotal();
-  res.json({ value: total });
+app.get("/trips", checkLogin, (req, res) => {
+  dbService.getAll().then((total) => res.send(total));
 });
 
 app.post("/login", async (req, res) => {
@@ -98,5 +93,5 @@ app.post("/login", async (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Expenses app listening at http://localhost:${port}`);
+  console.log(`Travel app listening at http://localhost:${port}`);
 });
