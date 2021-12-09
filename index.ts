@@ -92,6 +92,12 @@ app.post("/login", async (req, res) => {
   res.json({ status: "ok" });
 });
 
+app.post("/signup", async (req, res) => {
+  const payload = req.body;
+  await authService.create({email: payload.email as string,password: payload.password as string})
+  res.json({ status: "ok" });
+});
+
 app.listen(port, () => {
   console.log(`Travel app listening at http://localhost:${port}`);
 });
