@@ -80,6 +80,8 @@ app.get("/trips", checkLogin, (req, res) => {
 app.post("/login", async (req, res) => {
   const payload = req.body;
   const sessionId = await authService.login(payload.email, payload.password);
+  //TODO: Remove this log once testing is done
+  console.log("session = "+sessionId)
   if (!sessionId) {
     res.status(401);
     return res.json({ message: "Bad email or password" });

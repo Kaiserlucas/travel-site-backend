@@ -43,8 +43,10 @@ class AuthService {
   async checkPassword(email: string, password: string): Promise<boolean> {
     const dbUser = await knex<User>("users").where({ email }).first();
     if (!dbUser) {
+      console.log("User not found.")
       return false;
     }
+    console.log("Checking password...")
     return bcrypt.compare(password, dbUser.password);
   }
 
@@ -54,11 +56,13 @@ class AuthService {
   ): Promise<string | undefined> {
     const correctPassword = await this.checkPassword(email, password);
     if (correctPassword) {
+      console.log("Password correct")
       const sessionId = crypto.randomUUID();
       // Set the new value with an expiry of 1 hour
       await setExAsync(sessionId, 60 * 60, email);
       return sessionId;
     }
+    console.log("Password incorrect")
     return undefined;
   }
 
