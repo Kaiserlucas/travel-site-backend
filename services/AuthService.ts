@@ -4,7 +4,7 @@ import Knex from "knex";
 import { promisify } from "util";
 
 import { createClient } from "redis";
-const crypto = require('crypto')
+import crypto from "crypto";
 
 const client = createClient({
   url: process.env.REDIS_URL,
