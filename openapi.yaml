@@ -1,0 +1,128 @@
+openapi: 3.0.1
+info:
+  title: Expense Tracker
+  description: This is the Expense Tracking API
+  version: 1.0.0
+externalDocs:
+  description: Github
+  url: http://github.com/example
+servers:
+  - url: https://expense-tracker.herokuapp.com/
+tags:
+  - name: expense
+    description: Everything about your expenses
+
+paths:
+  /expenses:
+    get:
+      tags:
+        - expense
+      summary: Get all expenses
+      responses:
+        "200":
+          description: Invalid ID supplied
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SavedExpense'
+    post:
+      tags:
+        - expense
+      summary: Add a new expense
+      requestBody:
+        description: Pet object that needs to be added to the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Expense'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SavedExpense'
+
+  /expenses/{uuid}:
+    delete:
+      tags:
+        - expense
+      summary: Deletes an expense by uuid
+      parameters:
+        - in: path
+          name: uuid
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: uuid of the entry to delete
+      responses:
+        "204":
+          description: successful operation
+
+  /summary:
+    get:
+      tags:
+        - summary
+      summary: Get a summary of all expenses
+      responses:
+        "200":
+          description: Successfull request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Summary'
+
+  /login:
+    post:
+      tags:
+        - login
+      summary: Log in and get cookie for authentication
+      responses:
+        "200":
+          description: Successfull request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Login'
+
+components:
+  schemas:
+    Expense:
+      type: object
+      properties:
+        name:
+          type: string
+        date:
+          type: string
+          format: date-time
+        value:
+          type: integer
+          format: int32
+    SavedExpense:
+      allOf:
+        - $ref: '#/components/schemas/Expense'
+        - type: object
+          required:
+            - id
+          properties:
+            id:
+              type: string
+              format: uuid
+    Summary:
+      type: object
+      properties:
+        value:
+          type: integer
+          format: int32
+    Login:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
