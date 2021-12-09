@@ -109,9 +109,9 @@ components:
         - $ref: '#/components/schemas/Trip'
         - type: object
           required:
-            - id
+            - uuid
           properties:
-            id:
+            uuid:
               type: string
               format: uuid
     Login:

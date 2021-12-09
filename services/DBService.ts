@@ -2,7 +2,6 @@ import crypto from "crypto";
 import { Knex } from "knex";
 
 type Trip = {
-  email: string;
   name: string;
   destination: string;
   startDate: Date;
@@ -10,7 +9,8 @@ type Trip = {
 };
 
 type SavedTrip = Trip & {
-  id: string;
+  email: string;
+  uuid: string;
 };
 
 class DBService {
@@ -21,24 +21,22 @@ class DBService {
     this.knex = knex;
   }
 
-  async add(trip: Trip): Promise<SavedTrip> {
+  async add(trip: Trip, email: string): Promise<SavedTrip> {
     const newTrip = {
       ...trip,
-      id: crypto.randomUUID(),
+      uuid: crypto.randomUUID(),
+      email: email,
     };
-    //TODO: Check for user
     await this.knex("trips").insert(newTrip);
     return newTrip;
   }
 
-  async delete(uuid: string): Promise<void> {
-    //TODO: Check for user
-    await this.knex("trips").where({ id: uuid }).delete();
+  async delete(uuid: string, email: string): Promise<void> {
+    await this.knex("trips").where({ uuid: uuid }).andWhere({email: email}).delete();
   }
 
-  async getAll(): Promise<Trip[]> {
-    //TODO: Check for user
-    return this.knex("trips");
+  async getAll(email: string): Promise<Trip[]> {
+    return this.knex("trips").where({email:email});
   }
 
 }

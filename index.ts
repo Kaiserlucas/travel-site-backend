@@ -62,19 +62,19 @@ app.use(
 
 app.post("/trips", checkLogin, (req, res) => {
   const payload = req.body;
-  dbService.add(payload).then((newEntry) => res.send(newEntry));
+  dbService.add(payload,req.userEmail!).then((newEntry) => res.send(newEntry));
 });
 
 app.delete("/trips/:tripId", checkLogin, (req, res) => {
   const id = req.params.tripId;
-  dbService.delete(id).then(() => {
+  dbService.delete(id,req.userEmail!).then(() => {
     res.status(204);
     res.send();
   });
 });
 
 app.get("/trips", checkLogin, (req, res) => {
-  dbService.getAll().then((total) => res.send(total));
+  dbService.getAll(req.userEmail!).then((total) => res.send(total));
 });
 
 app.post("/login", async (req, res) => {
