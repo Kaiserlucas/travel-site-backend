@@ -70,7 +70,20 @@ paths:
       summary: Log in and get cookie for authentication
       responses:
         "200":
-          description: Successfull request
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Login'
+
+  /signup:
+    post:
+      tags:
+        - signup
+      summary: Sign up and create a new account
+      responses:
+        "200":
+          description: Successful request
           content:
             application/json:
               schema:
