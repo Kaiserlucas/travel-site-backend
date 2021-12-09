@@ -4,7 +4,7 @@ import Knex from "knex";
 import { promisify } from "util";
 
 import { createClient } from "redis";
-import crypto from "crypto";
+const crypto = require('crypto')
 
 const client = createClient({
   url: process.env.REDIS_URL,
@@ -12,10 +12,6 @@ const client = createClient({
 client.on("error", (err) => console.log("Redis Client Error", err));
 client.on("connect", () => console.log("Successfully connected to redis"));
 
-// Redis version 3 does not support the promise based
-// interface yet. We can use node's `promisify` function
-// though to turn the non-promise code into code that
-// does return Promises and can hence be `await`ed.
 const getAsync = promisify(client.get).bind(client);
 const setExAsync = promisify(client.setex).bind(client);
 
@@ -43,10 +39,8 @@ class AuthService {
   async checkPassword(email: string, password: string): Promise<boolean> {
     const dbUser = await knex<User>("users").where({ email }).first();
     if (!dbUser) {
-      console.log("User not found.")
       return false;
     }
-    console.log("Checking password...")
     return bcrypt.compare(password, dbUser.password);
   }
 
@@ -56,14 +50,12 @@ class AuthService {
   ): Promise<string | undefined> {
     const correctPassword = await this.checkPassword(email, password);
     if (correctPassword) {
+      console.log("Generating sessionID...");
       const sessionId = crypto.randomUUID();
-      console.log("Password correct. Session ID = "+sessionId);
-      // Set the new value with an expiry of 1 hour
+      console.log("Successful: "+sessionId);
       await setExAsync(sessionId, 60 * 60, email);
-      console.log("Session created in Redis DB");
       return sessionId;
     }
-    console.log("Password incorrect")
     return undefined;
   }
 
