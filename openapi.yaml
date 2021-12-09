@@ -1,23 +1,23 @@
 openapi: 3.0.1
 info:
-  title: Expense Tracker
-  description: This is the Expense Tracking API
+  title: Travelsite API
+  description: This is the Travelsite API
   version: 1.0.0
 externalDocs:
   description: Github
-  url: http://github.com/example
+  url: https://github.com/Kaiserlucas/travel-site-backend
 servers:
-  - url: https://expense-tracker.herokuapp.com/
+  - url: https://webdevelopment-travelsite.herokuapp.com/
 tags:
-  - name: expense
-    description: Everything about your expenses
+  - name: trips
+    description: Everything about your trips
 
 paths:
-  /expenses:
+  /trips:
     get:
       tags:
-        - expense
-      summary: Get all expenses
+        - trips
+      summary: Get all trips
       responses:
         "200":
           description: Invalid ID supplied
@@ -26,17 +26,17 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/SavedExpense'
+                  $ref: '#/components/schemas/SavedTrip'
     post:
       tags:
-        - expense
-      summary: Add a new expense
+        - trips
+      summary: Add a new trip
       requestBody:
-        description: Pet object that needs to be added to the store
+        description: Trip object that needs to be added to the database
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Expense'
+              $ref: '#/components/schemas/Trip'
         required: true
       responses:
         "200":
@@ -44,13 +44,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SavedExpense'
+                $ref: '#/components/schemas/SavedTrip'
 
-  /expenses/{uuid}:
+  /trips/{uuid}:
     delete:
       tags:
-        - expense
-      summary: Deletes an expense by uuid
+        - trips
+      summary: Deletes a trip by uuid
       parameters:
         - in: path
           name: uuid
@@ -62,19 +62,6 @@ paths:
       responses:
         "204":
           description: successful operation
-
-  /summary:
-    get:
-      tags:
-        - summary
-      summary: Get a summary of all expenses
-      responses:
-        "200":
-          description: Successfull request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Summary'
 
   /login:
     post:
@@ -91,20 +78,22 @@ paths:
 
 components:
   schemas:
-    Expense:
+    Trip:
       type: object
       properties:
         name:
           type: string
-        date:
+        destination:
+          type: string
+        startDate:
           type: string
           format: date-time
-        value:
-          type: integer
-          format: int32
-    SavedExpense:
+        endDate:
+          type: string
+          format: date-time
+    SavedTrip:
       allOf:
-        - $ref: '#/components/schemas/Expense'
+        - $ref: '#/components/schemas/Trip'
         - type: object
           required:
             - id
@@ -112,12 +101,6 @@ components:
             id:
               type: string
               format: uuid
-    Summary:
-      type: object
-      properties:
-        value:
-          type: integer
-          format: int32
     Login:
       type: object
       properties:
