@@ -1,6 +1,6 @@
 import express, { Request } from "express";
 import cookieParser from "cookie-parser";
-import ExpenseService from "./services/ExpenseService";
+import DBService from "./services/DBService";
 import * as OpenApiValidator from "express-openapi-validator";
 import { HttpError } from "express-openapi-validator/dist/framework/types";
 import AuthService from "./services/AuthService";
@@ -11,7 +11,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 const knex = knexDriver(config);
-const expenseService = new ExpenseService(knex);
+const expenseService = new DBService(knex);
 const authService = new AuthService();
 
 app.use(express.json());

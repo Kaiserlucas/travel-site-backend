@@ -11,7 +11,7 @@ type SavedExpense = Expense & {
   id: string;
 };
 
-class ExpenseService {
+class DBService {
   expenses: SavedExpense[] = [];
   private readonly knex: Knex;
 
@@ -37,11 +37,8 @@ class ExpenseService {
   }
 
   async getTotal(): Promise<number> {
-    const response = await this.knex<SavedExpense>("expenses")
-      .sum("value")
-      .first();
-    return response?.sum || 0;
+    return 0;
   }
 }
 
-export default ExpenseService;
+export default DBService;
