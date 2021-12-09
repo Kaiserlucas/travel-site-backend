@@ -56,10 +56,11 @@ class AuthService {
   ): Promise<string | undefined> {
     const correctPassword = await this.checkPassword(email, password);
     if (correctPassword) {
-      console.log("Password correct")
       const sessionId = crypto.randomUUID();
+      console.log("Password correct. Session ID = "+sessionId);
       // Set the new value with an expiry of 1 hour
       await setExAsync(sessionId, 60 * 60, email);
+      console.log("Session created in Redis DB");
       return sessionId;
     }
     console.log("Password incorrect")
