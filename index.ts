@@ -38,6 +38,7 @@ app.use(function (req, res, next) {
   next();
 });
 
+/*
 app.use(
   OpenApiValidator.middleware({
     apiSpec: "./openapi.yaml",
@@ -45,6 +46,7 @@ app.use(
     validateResponses: false,
   })
 );
+ */
 
 const checkLogin = async (
   req: Request,
