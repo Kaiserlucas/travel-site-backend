@@ -112,6 +112,7 @@ app.post("/login", async (req, res) => {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
   });
+  console.log(sessionId);
   res.json({ status: "ok" });
 });
 
