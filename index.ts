@@ -21,7 +21,7 @@ app.use(cookieParser());
 app.use(
   OpenApiValidator.middleware({
     apiSpec: "./openapi.yaml",
-    validateRequests: true,
+    validateRequests: false,
     validateResponses: false,
   })
 );
