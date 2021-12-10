@@ -68,6 +68,7 @@ const checkLogin = async (
   next();
 };
 
+/*
 app.use(
   (
     err: HttpError,
@@ -82,9 +83,11 @@ app.use(
     });
   }
 );
+ */
 
 app.options("/login", checkLogin, (req, res) => {
     console.log("accepted");
+    res.status(200);
 });
 
 app.post("/trips", checkLogin, (req, res) => {
