@@ -63,27 +63,25 @@ app.use(
 
 app.use(function (req, res, next) {
 
-  let oneof = false;
-  if(req.headers.origin) {
-    res.header('Access-Control-Allow-Origin', req.headers.origin);
-    oneof = true;
-  }
-  if(req.headers['access-control-request-method']) {
-    res.header('Access-Control-Allow-Methods', req.headers['access-control-request-method']);
-    oneof = true;
-  }
-  if(req.headers['access-control-request-headers']) {
-    res.header('Access-Control-Allow-Headers', req.headers['access-control-request-headers']);
-    oneof = true;
-  }
 
-  // intercept OPTIONS method
-  if (oneof && req.method == 'OPTIONS') {
-    res.send(200);
-  }
-  else {
-    next();
-  }
+  res.setHeader('Access-Control-Allow-Origin', '*');
+
+  // Request methods you wish to allow
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+  // Request headers you wish to allow
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+  // Set to true if you need the website to include cookies in the requests sent
+  // to the API (e.g. in case you use sessions)
+  res.setHeader('Access-Control-Allow-Credentials', "true");
+
+  // Pass to next layer of middleware
+  next();
+});
+
+app.options("/login", checkLogin, (req, res) => {
+    console.log("accepted");
 });
 
 app.post("/trips", checkLogin, (req, res) => {
