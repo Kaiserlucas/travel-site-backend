@@ -61,11 +61,14 @@ app.use(
   }
 );
 
-/*
 app.use(function (req, res, next) {
 
   // Website you wish to allow to connect
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  if (req.method === "OPTIONS") {
+    res.header('Access-Control-Allow-Origin', req.headers.origin);
+  } else {
+    res.header('Access-Control-Allow-Origin', '*');
+  }
 
   // Request methods you wish to allow
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -80,9 +83,6 @@ app.use(function (req, res, next) {
   // Pass to next layer of middleware
   next();
 });
- */
-
-app.use(cors({origin:true,credentials: true}));
 
 app.post("/trips", checkLogin, (req, res) => {
   const payload = req.body;
