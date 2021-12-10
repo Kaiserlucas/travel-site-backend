@@ -18,13 +18,15 @@ const authService = new AuthService();
 app.use(express.json());
 app.use(cookieParser());
 
+/*
 app.use(
   OpenApiValidator.middleware({
     apiSpec: "./openapi.yaml",
-    validateRequests: false,
+    validateRequests: true,
     validateResponses: false,
   })
 );
+ */
 
 const checkLogin = async (
   req: Request,
@@ -46,6 +48,7 @@ const checkLogin = async (
   next();
 };
 
+/*
 app.use(
   (
     err: HttpError,
@@ -60,6 +63,7 @@ app.use(
     });
   }
 );
+ */
 
 app.use(function (req, res, next) {
 
