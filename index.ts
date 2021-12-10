@@ -64,11 +64,7 @@ app.use(
 app.use(function (req, res, next) {
 
 
-  res.header('Access-Control-Allow-Origin', '*');
-  // Website you wish to allow to connect
-  if (req.method === "OPTIONS") {
-    res.header('Access-Control-Allow-Origin', req.headers.origin);
-  }
+  res.setHeader('Access-Control-Allow-Origin', '*');
 
   // Request methods you wish to allow
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
