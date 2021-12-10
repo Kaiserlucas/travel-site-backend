@@ -52,8 +52,8 @@ class AuthService {
     if (correctPassword) {
       console.log("Generating sessionID...");
       //TODO: Figure out why crypto refuses to work
-      const sessionId = crypto.randomUUID();
-      //const sessionId = email;
+      //const sessionId = crypto.randomUUID();
+      const sessionId = email;
       console.log("Successful: "+sessionId);
       await setExAsync(sessionId, 60 * 60, email);
       return sessionId;
