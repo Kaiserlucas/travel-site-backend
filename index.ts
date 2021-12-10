@@ -6,6 +6,7 @@ import { HttpError } from "express-openapi-validator/dist/framework/types";
 import AuthService from "./services/AuthService";
 import { knex as knexDriver } from "knex";
 import config from "./knexfile";
+import cors from "cors";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -60,6 +61,7 @@ app.use(
   }
 );
 
+/*
 app.use(function (req, res, next) {
 
   // Website you wish to allow to connect
@@ -78,6 +80,9 @@ app.use(function (req, res, next) {
   // Pass to next layer of middleware
   next();
 });
+ */
+
+app.use(cors({origin:true,credentials: true}));
 
 app.post("/trips", checkLogin, (req, res) => {
   const payload = req.body;
