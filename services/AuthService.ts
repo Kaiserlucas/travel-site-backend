@@ -55,6 +55,7 @@ class AuthService {
       const sessionId = uuid();
       console.log("Successful: "+sessionId);
       await setExAsync(sessionId, 60 * 60, email);
+      console.log("If this message shows Redis works: "+await this.getUserEmailForSession(sessionId))
       return sessionId;
     }
     return undefined;
