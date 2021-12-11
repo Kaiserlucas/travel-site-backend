@@ -4,8 +4,8 @@ import { Knex } from "knex";
 type Trip = {
   name: string;
   destination: string;
-  startDate: Date;
-  endDate: Date;
+  startDate: string;
+  endDate: string;
 };
 
 type SavedTrip = Trip & {
