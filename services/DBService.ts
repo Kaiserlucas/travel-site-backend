@@ -4,8 +4,8 @@ import { Knex } from "knex";
 type Trip = {
   name: string;
   destination: string;
-  startDate: string;
-  endDate: string;
+  startDate: Date;
+  endDate: Date;
 };
 
 type SavedTrip = Trip & {
@@ -27,7 +27,9 @@ class DBService {
       uuid: uuid(),
       email: email,
     };
-    await this.knex("trips").insert(newTrip);
+
+    const test = {name: newTrip.name,destination: newTrip.destination,startdate: newTrip.startDate,enddate: newTrip.endDate,email: newTrip.email,uuid: newTrip.uuid}
+    await this.knex("trips").insert(test);
     return newTrip;
   }
 
