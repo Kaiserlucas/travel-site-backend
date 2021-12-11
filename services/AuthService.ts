@@ -5,6 +5,7 @@ import { promisify } from "util";
 
 import { createClient } from "redis";
 import crypto from "crypto";
+import { uuid } from "uuidv4";
 
 const client = createClient({
   url: process.env.REDIS_URL,
@@ -52,8 +53,7 @@ class AuthService {
     if (correctPassword) {
       console.log("Generating sessionID...");
       //TODO: Figure out why crypto refuses to work
-      //const sessionId = crypto.randomUUID();
-      const sessionId = email;
+      const sessionId = uuid();
       console.log("Successful: "+sessionId);
       await setExAsync(sessionId, 60 * 60, email);
       return sessionId;
