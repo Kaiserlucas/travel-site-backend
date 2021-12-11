@@ -53,6 +53,7 @@ const checkLogin = async (
   next: express.NextFunction
 ) => {
   const session = req.cookies.session;
+  console.log("Received session is: "+session);
   if (!session) {
     res.status(401);
     return res.json({ message: "You need to be logged in to see this page." });
