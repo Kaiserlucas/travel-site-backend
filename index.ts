@@ -110,8 +110,9 @@ app.post("/login", async (req, res) => {
     maxAge: 60 * 60 * 1000,
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-  }).send;
+  });
   console.log(sessionId);
+  res.json({ status: "ok" });
 });
 
 app.post("/signup", async (req, res) => {
