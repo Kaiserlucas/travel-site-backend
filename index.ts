@@ -6,7 +6,6 @@ import { HttpError } from "express-openapi-validator/dist/framework/types";
 import AuthService from "./services/AuthService";
 import { knex as knexDriver } from "knex";
 import config from "./knexfile";
-import cors from "cors";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -111,7 +110,7 @@ app.post("/login", async (req, res) => {
     maxAge: 60 * 60 * 1000,
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-  });
+  }).send;
   console.log(sessionId);
   res.json({ status: "ok" });
 });
