@@ -50,12 +50,8 @@ class AuthService {
   ): Promise<string | undefined> {
     const correctPassword = await this.checkPassword(email, password);
     if (correctPassword) {
-      console.log("Generating sessionID...");
-      //TODO: Figure out why crypto refuses to work
       const sessionId = uuid();
-      console.log("Successful: "+sessionId);
       await setExAsync(sessionId, 60 * 60, email);
-      console.log("If this message shows Redis works: "+await this.getUserEmailForSession(sessionId))
       return sessionId;
     }
     return undefined;
