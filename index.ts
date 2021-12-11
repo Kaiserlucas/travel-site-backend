@@ -106,12 +106,12 @@ app.post("/login", async (req, res) => {
     res.status(401);
     return res.json({ message: "Bad email or password" });
   }
-  res.cookie("test","test",{sameSite:"lax"});
+  res.cookie("test","test",{sameSite:"none"});
   res.cookie("session", sessionId, {
     maxAge: 60 * 60 * 1000,
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
+    sameSite: "none",
   });
   console.log(sessionId);
   res.json({ status: "ok" });
