@@ -1,4 +1,4 @@
-import crypto from "crypto";
+import { uuid } from "uuidv4";
 import { Knex } from "knex";
 
 type Trip = {
@@ -24,8 +24,7 @@ class DBService {
   async add(trip: Trip, email: string): Promise<SavedTrip> {
     const newTrip = {
       ...trip,
-      //uuid: crypto.randomUUID(),
-      uuid: "1",
+      uuid: uuid(),
       email: email,
     };
     await this.knex("trips").insert(newTrip);

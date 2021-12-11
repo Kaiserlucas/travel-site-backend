@@ -4,7 +4,6 @@ import Knex from "knex";
 import { promisify } from "util";
 
 import { createClient } from "redis";
-import crypto from "crypto";
 import { uuid } from "uuidv4";
 
 const client = createClient({
