@@ -85,6 +85,10 @@ app.use(
 
 app.post("/trips", checkLogin, (req, res) => {
   const payload = req.body;
+  console.log(payload.name);
+  console.log(payload.destination);
+  console.log(payload.startDate);
+  console.log(payload.endDate);
   dbService.add(payload,req.userEmail!).then((newEntry) => res.send(newEntry));
 });
 
