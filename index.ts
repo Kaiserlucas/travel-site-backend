@@ -106,6 +106,12 @@ app.post("/login", async (req, res) => {
     res.status(401);
     return res.json({ message: "Bad email or password" });
   }
+  res
+      .writeHead(200, {
+        "Set-Cookie": "token=encryptedstring; HttpOnly",
+        "Access-Control-Allow-Credentials": "true"
+      })
+      .send();
   res.cookie("session", sessionId, {
     maxAge: 60 * 60 * 1000,
     httpOnly: true,
