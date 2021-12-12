@@ -101,6 +101,7 @@ app.delete("/trips/:tripId", checkLogin, (req, res) => {
 });
 
 app.get("/trips", checkLogin, (req, res) => {
+  dbService.getAll(req.userEmail!).then((total)=>console.log(total));
   dbService.getAll(req.userEmail!).then((total) => res.send(total));
 });
 
