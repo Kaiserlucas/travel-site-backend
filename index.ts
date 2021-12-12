@@ -100,9 +100,9 @@ app.delete("/trips/:tripId", checkLogin, (req, res) => {
   });
 });
 
-app.delete("/trips/", checkLogin, (req, res) => {
-  const uuid = req.body;
-  dbService.delete(uuid,req.userEmail!).then(() => {
+app.delete("/trips", checkLogin, (req, res) => {
+  const payload = req.body;
+  dbService.delete(payload.uuid,req.userEmail!).then(() => {
     res.status(204);
     res.send();
   });
