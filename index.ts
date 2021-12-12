@@ -100,8 +100,15 @@ app.delete("/trips/:tripId", checkLogin, (req, res) => {
   });
 });
 
+app.delete("/trips/", checkLogin, (req, res) => {
+  const uuid = req.body;
+  dbService.delete(uuid,req.userEmail!).then(() => {
+    res.status(204);
+    res.send();
+  });
+});
+
 app.get("/trips", checkLogin, (req, res) => {
-  dbService.getAll(req.userEmail!).then((total)=>console.log(total));
   dbService.getAll(req.userEmail!).then((total) => res.send(total));
 });
 
