@@ -62,6 +62,12 @@ class AuthService {
   ): Promise<string | null> {
     return getAsync(sessionId);
   }
+
+  async checkUserExistence(email:string): Promise<boolean> {
+    const response = await knex("users").where({email:email});
+    return response.length > 0;
+  }
+
 }
 
 export default AuthService;

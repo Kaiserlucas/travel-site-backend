@@ -134,6 +134,9 @@ app.post("/signup", async (req, res) => {
   if (payload.password.length < 6 || !validateEmail(payload.email)) {
     res.status(401);
     return res.json({ message: "Bad email or password" });
+  } else if(await authService.checkUserExistence(payload.email)) {
+    res.status(401);
+    return res.json({ message: "User already registered" });
   } else {
     await authService.create({email: payload.email as string,password: payload.password as string})
     res.json({ status: "ok" });
@@ -144,7 +147,7 @@ app.listen(port, () => {
   console.log(`Travel app listening at http://localhost:${port}`);
 });
 
-const validateEmail = (email:String) => {
+const validateEmail = (email:string) => {
 return email.match(
     /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 );
