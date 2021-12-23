@@ -26,10 +26,17 @@ class AuthService {
   async create(newUser: User): Promise<void> {
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(newUser.password, salt);
+    const hashedUser = {email: newUser.email ,password:passwordHash}
+    const verificationID = uuid();
+    await setExAsync(verificationID, 60 * 60, JSON.stringify(hashedUser));
+    /*
     await knex("users").insert({
       ...newUser,
       password: passwordHash,
     });
+     */
+    console.log(verificationID);
+    //TODO: Send Email
   }
 
   async delete(email: string): Promise<void> {
