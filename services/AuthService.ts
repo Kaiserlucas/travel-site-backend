@@ -50,8 +50,10 @@ class AuthService {
       from: process.env.GMAIL_USER,
       to: newUser.email,
       subject: 'Bestätigung Ihres Travelsite Kontos',
-      text: 'Bitte bestätigen Sie das erstellen Ihres Kontos durch das Folgen des folgenden Links: https://travel-site-project.netlify.app/verify.html?id='+verificationID
+      text: 'Bitte bestätigen Sie das Erstellen Ihres Kontos durch das Folgen des folgenden Links: https://travel-site-project.netlify.app/verify.html?id='+verificationID
     };
+    console.log(process.env.GMAIL_USER)
+    console.log(process.env.GMAIL_PASSWORD)
     await transporter.sendMail(mailOptions)
   }
 
