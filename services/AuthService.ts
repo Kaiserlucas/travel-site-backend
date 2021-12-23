@@ -6,6 +6,15 @@ import { promisify } from "util";
 import { createClient } from "redis";
 import { uuid } from "uuidv4";
 
+const nodemailer = require('nodemailer');
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.GMAIL_USER,
+    pass: process.env.GMAIL_PASSWORD
+  }
+});
+
 const client = createClient({
   url: process.env.REDIS_URL,
 });
@@ -36,7 +45,13 @@ class AuthService {
     });
      */
     console.log(verificationID);
-    //TODO: Send Email
+    const mailOptions = {
+      from: process.env.GMAIL_USER,
+      to: newUser.email,
+      subject: 'Bestätigung Ihres Travelsite Kontos',
+      text: 'Bitte bestätigen Sie das erstellen Ihres Kontos durch das Folgen des folgenden Links: https://travel-site-project.netlify.app/verify.html?id='+verificationID
+    };
+    transporter.sendMail(mailOptions)
   }
 
   async verify(verificationID:string): Promise<boolean> {
