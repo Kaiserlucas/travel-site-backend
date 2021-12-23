@@ -143,6 +143,16 @@ app.post("/signup", async (req, res) => {
   }
 });
 
+app.post("/verify", async (req, res) => {
+  const payload = req.body;
+  if(await authService.verify(payload.verificationID)) {
+    res.json({ status: "ok" });
+  } else {
+    res.status(401);
+    return res.json({ message: "Bad verificationID" });
+  }
+});
+
 app.listen(port, () => {
   console.log(`Travel app listening at http://localhost:${port}`);
 });
