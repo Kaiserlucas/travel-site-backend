@@ -63,9 +63,11 @@ class AuthService {
       return false;
     } else {
       const user = JSON.parse(json)
-      await knex("users").insert({
-        ...user
-      });
+      if(!await this.checkUserExistence(user.email)) {
+        await knex("users").insert({
+          ...user
+        });
+      }
       return true;
     }
   }
