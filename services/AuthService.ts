@@ -39,6 +39,19 @@ class AuthService {
     //TODO: Send Email
   }
 
+  async verify(verificationID:string): Promise<boolean> {
+    const json = await getAsync(verificationID);
+    if(!json) {
+      return false;
+    } else {
+      const user = JSON.parse(json)
+      await knex("users").insert({
+        ...user
+      });
+      return true;
+    }
+  }
+
   async delete(email: string): Promise<void> {
     await knex("users").where({email}).delete()
   }
