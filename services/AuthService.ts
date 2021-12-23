@@ -6,7 +6,8 @@ import { promisify } from "util";
 import { createClient } from "redis";
 import { uuid } from "uuidv4";
 
-const nodemailer = require('nodemailer');
+import nodemailer from "nodemailer";
+
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -51,7 +52,7 @@ class AuthService {
       subject: 'Bestätigung Ihres Travelsite Kontos',
       text: 'Bitte bestätigen Sie das erstellen Ihres Kontos durch das Folgen des folgenden Links: https://travel-site-project.netlify.app/verify.html?id='+verificationID
     };
-    transporter.sendMail(mailOptions)
+    await transporter.sendMail(mailOptions)
   }
 
   async verify(verificationID:string): Promise<boolean> {
